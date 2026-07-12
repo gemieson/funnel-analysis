@@ -63,21 +63,26 @@ Three candidate explanations, each with a testable prediction, checked by compar
 
 ## 5. Experiment Design
 
-**Population:** organic-channel checkout abandonments — the worst-converting, highest-volume segment (3,111 users reach shipping via organic).
+**Population:** all-channel checkout abandonments (~46 eligible per day). Organic, the worst-converting channel, is a pre-registered subgroup analysis: at ~15 per day it is underpowered as a primary population.
+
+**Eligibility:** a session that reaches shipping info without reaching payment. Session-based by necessity: defining abandoners as never-paid users makes later purchase impossible by construction (see Data Quality).
 
 **Hypothesis:** cart-recovery outreach (email with saved cart) increases purchase completion among abandoners with latent intent.
 
 **Design:**
-- **Randomization:** on the **user**, 50/50, triggered at **first abandonment**. (Per-session randomization would place repeat abandoners in both arms, contaminating the comparison.)
-- **Treatment:** cart-recovery email with saved cart. **Control:** status quo — no contact.
-- **Primary metric:** purchase within 7 days of abandonment.
+
+- **Randomization:** on the user, 50/50, triggered at first abandonment. Per-session randomization would place repeat abandoners in both arms, contaminating the comparison.
+- **Treatment:** cart-recovery email with saved cart. **Control:** status quo, no contact.
+- **Primary metric:** purchase within 7 days of first abandonment.
 - **Guardrails:** unsubscribe rate; revenue per user. Neither may degrade.
-- **Baseline:** [TODO — session-level 7-day unprompted purchase rate after abandonment, organic channel]
-- **Power analysis:** [TODO — α=0.05, power=0.80, MDE chosen to fit runtime given [TODO] daily eligible abandonments; statsmodels calculation in `analysis/power_analysis.py`]
-- **Decision rule (pre-registered):** ship iff the primary metric lifts significantly at α=0.05 AND no guardrail degrades. Run full weeks; no interim peeking.
+- **Baseline:** 2.84% purchase unprompted within 7 days (119 of 4,189 abandoners).
+- **Power analysis:** alpha 0.05, power 0.80, MDE +2.0pp requires 1,425 users per arm, roughly 9 weeks at 46 per day (`analysis/power_analysis.py`).
+- **Decision rule (pre-registered):** ship iff the primary metric lifts significantly at alpha 0.05 AND no guardrail degrades. Run full weeks; no interim peeking.
 - **Validity:** randomization balance check at start; monitor for novelty effect.
 
-**Why this experiment and not a payment-page fix:** the mechanism analysis bounds the opportunity. With ~90% of droppers never returning, a UI experiment on the payment step would chase users who were never buying. Re-engagement targets the ~10% with demonstrated latent intent.
+**The power constraint is a finding, not a footnote.** Effects below ~2pp are undetectable in a practical window at this traffic, and +2pp on a 2.84% baseline is a 70% relative lift. The test is powered only for a large effect; a modest real improvement of +1pp would take 8 months to detect. The MDE was chosen as the smallest effect measurable in a two-month runtime.
+
+**Why this experiment and not a payment-page fix:** the mechanism analysis bounds the opportunity. With 90% of droppers never returning, a UI experiment on the payment step would chase users who were never buying. Re-engagement targets the roughly 10% with demonstrated latent intent.
 
 ## 6. Data Quality — Three Catches
 
@@ -95,27 +100,3 @@ Each looked like a finding. None was. They are documented here because knowing w
 - Mechanism checks are observational and user-level; see §4 notes.
 - `traffic_source` reflects the user's *acquisition* channel, not per-session source.
 - Friction hypothesis untested cleanly — time-to-exit is measured differently for droppers (to last event) vs. completers (to payment).
-
-## Repo Structure
-
-```
-├── README.md
-├── sql/
-│   ├── 00_data_quality.sql
-│   ├── 01_funnel_user_level.sql
-│   ├── 02a_segment_device.sql
-│   ├── 02b_segment_traffic_source.sql
-│   ├── 03_segment_payment_step.sql
-│   ├── 10_session_extract.sql
-│   ├── 11_session_funnel.sql
-│   ├── 12_funnel_comparison.sql
-│   ├── 14_repeat_attempts.sql
-│   ├── 20_mechanism_cart_value.sql
-│   ├── 21_mechanism_time_to_drop.sql
-│   └── 22_mechanism_return_rate.sql
-├── analysis/
-│   ├── power_analysis.py
-│   └── z_tests.py
-└── figures/
-    └── funnel_chart.png
-```
