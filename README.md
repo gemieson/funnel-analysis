@@ -47,8 +47,6 @@ Segmented both major leaks by device and traffic source.
 
 - **Device:** flat at both steps (view→cart spread: 19.1–20.8%; shipping→payment: flat). No device effect.
 - **Traffic source, view→cart:** modest (organic 18.9% vs. referral 22.1%).
-- 
-- 
 - **Traffic source, shipping→payment:** the real finding —
 
 | Medium | Shipping | Payment | Conversion |
@@ -59,9 +57,18 @@ Segmented both major leaks by device and traffic source.
 | (none) | 2,223 | 1,300 | 0.585 |
 | **referral** | 1,863 | 1,202 | **0.645** |
 
-**Organic converts 9.9pp worse than referral** ([two-proportion z-test: p = TODO]). Referral users arrive via a specific link with specific intent; organic searchers browse. (cpc is also low but n=348 — noted, not leaned on.)
+### Statistical test: channel gap
 
-> Excluded: `(data deleted)` — an obfuscation artifact, not a real channel. It showed the *highest* rate in the table (0.309 at view→cart) and would have been the headline finding if taken at face value.
+Two-proportion z-test on shipping→payment conversion, organic vs. referral (`analysis/z_tests.py`):
+
+| Channel | Converted | n | Rate |
+|---|---|---|---|
+| organic | 1,698 | 3,111 | 54.6% |
+| referral | 1,202 | 1,863 | 64.5% |
+
+**Difference: 9.9pp (z = −6.88, p < 0.001).** The gap is statistically significant; at these
+sample sizes the meaningful result is the magnitude — a ~10pp spread by acquisition channel,
+consistent with the low-intent mechanism (§4).
 
 ## 4. Mechanism: Why Do They Leave?
 
