@@ -84,15 +84,6 @@ Three candidate explanations, each with a testable prediction, checked by compar
 
 **Why this experiment and not a payment-page fix:** the mechanism analysis bounds the opportunity. With 90% of droppers never returning, a UI experiment on the payment step would chase users who were never buying. Re-engagement targets the roughly 10% with demonstrated latent intent.
 
-## 6. Data Quality — Three Catches
-
-This is an obfuscated public dataset, and three findings turned out to be artifacts rather than insights:
-
-1. **checkout→shipping = 1.000** (user-level). Impossible — no funnel step converts perfectly. Likely event co-firing or an obfuscation artifact. [TODO: does the session-level funnel resolve this?]
-2. **Category-level cart→purchase ratios > 1.0** — more buyers than carters, logically impossible. Root cause: view/cart events and purchase events use *inconsistent category taxonomies* (hierarchical paths vs. flat names), silently double-counting products. Category analysis excluded entirely rather than reported.
-3. **`(data deleted)` as the "best-converting channel"** — a scrubbed placeholder value, not a channel. Excluded.
-
-Each looked like a finding. None was. They are documented here because knowing what *not* to report is part of the analysis.
 
 ## 7. Limitations
 
