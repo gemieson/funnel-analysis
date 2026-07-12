@@ -8,7 +8,7 @@ SQL (BigQuery) · Python (statsmodels) · GA4 e-commerce event data (~270K users
 
 ## TL;DR
 
-- Built a six-step checkout funnel; the actionable leak is **shipping → payment**, where **41% of users** who enter shipping info never reach the payment step.
+- Built a five-step checkout funnel; the actionable leak is **shipping → payment**, where **41% of users** who enter shipping info never reach the payment step.
 - Tested three abandonment hypotheses against user behavior. **Refuted the textbook explanation (cost surprise)** — droppers carry 3x *smaller* carts, not larger. Evidence supports **low purchase intent** as the dominant mechanism (droppers are 4x less likely to ever return).
 - Found one real segment: **organic traffic converts 9.9pp worse than referral** at the payment step ([z-test: p = TODO]) — consistent with the intent mechanism.
 - Since low intent can't be fixed with UI changes, **designed an A/B test targeting the recoverable population instead**: cart-recovery outreach to organic-channel abandoners, with a pre-registered decision rule and a power analysis sized to actual traffic volume.
