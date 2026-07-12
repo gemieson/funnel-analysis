@@ -25,15 +25,17 @@ Defined two ways, because the definition changes the answer:
 
 | Step | User-level (ever/never) | Session-level (per attempt) |
 |---|---|---|
-| view → cart | 0.205 | TODO |
-| cart → checkout | 0.774 | TODO |
-| checkout → shipping | 1.000 ⚠️ | TODO |
-| **shipping → payment** | **0.592** | **TODO** |
-| payment → purchase | 0.768 | TODO |
+| view → cart | 0.205 | 0.197 |
+| cart → checkout/shipping | 0.774 | 0.731 |
+| **shipping → payment** | **0.592** | **0.614** |
+| payment → purchase | 0.768 | 0.711 |
 
-**Definition matters.** User-level asks "what share of *users* ever get through?"; session-level asks "what share of *checkout attempts* succeed?" A user who abandons on Day 1 and buys on Day 30 is a user-level completer — their abandoned attempt is invisible. Session-level exposes [TODO N] such hidden abandonments. Session-level is the operationally accurate view and is used as the experiment baseline.
+User-level asks "what share of *users* ever get through?"; session-level asks "what share of *checkout attempts* succeed?"
 
-⚠️ The user-level `checkout → shipping = 1.000` is impossible in a real funnel (see Data Quality).
+†begin_checkout and add_shipping_info co-occur in 100% of both users and sessions — effectively one event in this dataset, treated as a single step
+
+The definitions nearly agree, and the reason why is itself a finding. The 9,714 users reaching shipping produced 11,105 attempts (~1.14 per user); per-attempt abandonment is 38.7% vs. 40.8% at the user level. Repeat attempts are rare and overwhelmingly successful — of ~1,400 retry sessions, only ~104 were repeat abandonments. In other words: abandoners almost never try again. One failed attempt, gone. This is the first hint of the low-intent mechanism established in §4. Session-level is used as the experiment baseline as the per-attempt operational view.
+
 
 ## 2. Choosing the Target
 
@@ -45,6 +47,8 @@ Segmented both major leaks by device and traffic source.
 
 - **Device:** flat at both steps (view→cart spread: 19.1–20.8%; shipping→payment: flat). No device effect.
 - **Traffic source, view→cart:** modest (organic 18.9% vs. referral 22.1%).
+- 
+- 
 - **Traffic source, shipping→payment:** the real finding —
 
 | Medium | Shipping | Payment | Conversion |
