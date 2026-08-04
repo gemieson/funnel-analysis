@@ -85,7 +85,7 @@ Three candidate explanations, each with a testable prediction, checked by compar
 **Why this experiment and not a payment-page fix:** the mechanism analysis bounds the opportunity. With 90% of droppers never returning, a UI experiment on the payment step would chase users who were never buying. Re-engagement targets the roughly 10% with demonstrated latent intent.
 
 
-## 7. Limitations
+## 6. Limitations
 
 - Obfuscated sample data with documented internal inconsistencies; results demonstrate method, not conclusions about the real store.
 - Mechanism checks are observational and user-level; see §4 notes.
